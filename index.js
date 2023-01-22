@@ -28,6 +28,8 @@ const logger = require('./middleware/logger');
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json()); // express middleware that takes care of converting objects to json file
 
+// Body Parser Middleware
+app.use(express.urlencoded({ extended: false }));
 //create a route
 // middlewares are functions that has access to the request and response.
 
