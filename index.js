@@ -2,9 +2,8 @@
 const express = require('express');
 const path = require('path'); // node built in function
 const app = express();
-
 const logger = require('./middleware/logger');
-
+const apiMembers = require('./routes/api/members');
 // app.use(logger);
 
 // create a route
@@ -13,6 +12,7 @@ const logger = require('./middleware/logger');
 //   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 // });
 
+app.set('view engine', 'ejs');
 /* create a static folder
     By using the middeleware express.static, we are telling express
     that all files that belong to the folder "public" are static
@@ -29,11 +29,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json()); // express middleware that takes care of converting objects to json file
 
 // Body Parser Middleware
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true })); // access information from forms
 //create a route
 // middlewares are functions that has access to the request and response.
-
-app.use('/api/members', require('./routes/api/members'));
+const salesRouter = require('./routes/nonapi/sales');
+app.use('/api/members', apiMembers);
+app.use('/sales', salesRouter);
 
 // create a port
 const PORT = process.env.PORT || 5000;
